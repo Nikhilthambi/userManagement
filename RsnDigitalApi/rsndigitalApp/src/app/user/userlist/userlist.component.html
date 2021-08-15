@@ -1,0 +1,26 @@
+<mat-card class="example-card">
+    <mat-card-header>
+       
+        <mat-card-title>Users</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date Of Birth</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let pd of service.list">
+                <td (click)="populateForm(pd)">{{pd.firstName}}</td>
+                <td (click)="populateForm(pd)">{{pd.lastName}}</td>
+                <td (click)="populateForm(pd)"> {{ pd.dob | date:'shortDate' }} </td>
+                <td>
+                    <i class="far fa-trash-alt fa-lg text-danger" (click)="onDelete(pd.userId)"></i>
+                </td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
