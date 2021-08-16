@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserDetail } from '../shared/user-detail.model';
 import { UserServiceService } from '../shared/user-service.service';
 
@@ -9,13 +10,15 @@ import { UserServiceService } from '../shared/user-service.service';
 })
 export class UserlistComponent implements OnInit {
 
-  constructor(public service: UserServiceService) { }
+  constructor(public service: UserServiceService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.service.refreshList();
   }
-  populateForm(selectedRecord:UserDetail) {
-    this.service.formData = Object.assign({}, selectedRecord);
+  populateForm(id:number) {
+    //this.service.formData = Object.assign({}, selectedRecord);
+    this.router.navigate(['/user/edit/',id]);
   }
 
   onDelete(id:number){
@@ -27,5 +30,9 @@ export class UserlistComponent implements OnInit {
         },
         err => { console.log(err); })
     }
+  }
+
+  createForm(){
+    this.router.navigate(['/user/edit/',0]);
   }
 }

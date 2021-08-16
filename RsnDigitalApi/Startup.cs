@@ -50,10 +50,8 @@ namespace RsnDigitalApi
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = "https://localhost:44337/",
-                    ValidIssuer = "https://localhost:44337/",
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
@@ -91,7 +89,9 @@ namespace RsnDigitalApi
             AllowAnyHeader());
 
             //set autharization for user validation
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

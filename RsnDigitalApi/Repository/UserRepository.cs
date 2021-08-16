@@ -2,6 +2,7 @@
 using RsnDigitalApi.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RsnDigitalApi.Repository
@@ -21,6 +22,12 @@ namespace RsnDigitalApi.Repository
                 return true;
             }
             return false;
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            var data = await dbContext.Users.Where(x => x.UserID == id).FirstOrDefaultAsync();
+            return data;
         }
 
         public async Task<List<User>> GetUsers()

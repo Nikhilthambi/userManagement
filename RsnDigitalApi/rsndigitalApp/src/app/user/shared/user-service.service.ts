@@ -17,15 +17,27 @@ export class UserServiceService {
     return this.http.post(this.baseURL, this.formData);
   }
   putUserDetail() {
-    return this.http.put(`${this.baseURL}/${this.formData.userId}`, this.formData);
+    return this.http.put(`${this.baseURL}/${this.formData.userID}`, this.formData);
   }
   deleteUsertDetail(id: number) {
     return this.http.delete(`${this.baseURL}/${id}`);
+  }
+
+  editUsertDetail(id: number) {
+    return this.http.get(`${this.baseURL}/${id}`);
   }
 
   refreshList() {
     this.http.get(this.baseURL)
       .toPromise()
       .then(res =>this.list = res as UserDetail[]);
+  }
+
+  validateUser(email:string, password:string) {
+    return this.http.post('https://localhost:44337/api/User/UserValidation',{
+      UserName:email,
+      Password:password
+    }).toPromise();
+   
   }
 }

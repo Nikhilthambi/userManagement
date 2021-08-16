@@ -5,8 +5,9 @@ import { UserRoutingModule } from './user-routing.module';
 import { LoginComponent } from './login/login.component';
 import { UserlistComponent } from './userlist/userlist.component';
 import { EdituserComponent } from './edituser/edituser.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MeterialModule } from '../meterial/meterial.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -19,7 +20,9 @@ import { MeterialModule } from '../meterial/meterial.module';
     CommonModule,
     UserRoutingModule,
     FormsModule,
-    MeterialModule
+    MeterialModule,
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class UserModule { }

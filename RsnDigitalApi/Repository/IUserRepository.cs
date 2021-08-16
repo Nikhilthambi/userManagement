@@ -12,5 +12,6 @@ namespace RsnDigitalApi.Repository
         Task<int> SaveUser(User user);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
+        Task<User> GetUser(int id);
     }
 }

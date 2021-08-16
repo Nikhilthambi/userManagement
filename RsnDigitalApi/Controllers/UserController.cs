@@ -19,12 +19,12 @@ namespace RsnDigitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
         private const string UserName = "Nikhil@gmail.com";
-        private const string Password = "";
+        private const string Password = "Nikhil123";
         private const int UserId = 100;
         private readonly IConfiguration _configuration;
         public UserController(IUserService _userService, IConfiguration configuration)
@@ -39,14 +39,50 @@ namespace RsnDigitalApi.Controllers
             var data = await userService.GetUsers();
             return Ok(data);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var ret = await userService.GetUser(id);
+            return Ok(ret);
+        }
+
+        // POST api/<UserController>
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] User data)
+        {
+            var ret = await userService.SaveUser(data);
+            return Ok(ret);
+        }
+
+        // PUT api/<UserController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] User value)
+        {
+            //User user = new User { UserID = 0, DOB = DateTime.Parse(value.DOB), FirstName = value.FirstName, LastName = value.LastName };
+            var data = await userService.UpdateUser(value);
+            return Ok(data);
+        }
+
+        // DELETE api/<UserController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var data = await userService.DeleteUser(id);
+            return Ok(data);
+        }
+
         [AllowAnonymous]
         [HttpPost("UserValidation")]
-        public string Get([FromBody] UserModel data)
+        public async Task<IActionResult> Get([FromBody] UserModel data)
         {
-            string token = string.Empty;
+            
             if (data != null && data.UserName == UserName && data.Password == Password)
             {
-
+                data.Password = null;
+                data.UserName = UserName;
+                data.Email = UserName;
+                data.UserID = UserId;
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 //add private key 
@@ -69,32 +105,13 @@ namespace RsnDigitalApi.Controllers
                 //create token from tokenDescriptor
                 var tokenKey = tokenHandler.CreateToken(tokenDescriptor);
                 //create token from tokenDescriptor
-                token = tokenHandler.WriteToken(tokenKey);
+                data.Token = tokenHandler.WriteToken(tokenKey);
             }
-            return token;
-        }
-
-        // POST api/<UserController>
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] User data)
-        {
-            var ret = await userService.SaveUser(data);
-            return Ok(ret);
-        }
-
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] User value)
-        {
-            var data = await userService.UpdateUser(value);
-            return Ok(data);
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var data = await userService.DeleteUser(id);
+            else
+            {
+                data.Email = null;
+                data.Password = null;
+            }
             return Ok(data);
         }
     }

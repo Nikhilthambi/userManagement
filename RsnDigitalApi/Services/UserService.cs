@@ -17,6 +17,17 @@ namespace RsnDigitalApi.Services
             return await userRepository.DeleteUser(id);
         }
 
+        public async Task<User> GetUser(int id)
+        {
+            var data = await userRepository.GetUser(id);
+            if (data != null)
+            {
+                User user = new User { DOB = data.DOB, FirstName = data.FirstName, UserID = data.UserID, LastName = data.LastName };
+                return user;
+            }
+            return new User();
+        }
+
         public async Task<List<User>> GetUsers()
         {
             var data = await userRepository.GetUsers();
@@ -49,7 +60,7 @@ namespace RsnDigitalApi.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 DOB = user.DOB,
-                UserID = 0
+                UserID = user.UserID
             };
             return await userRepository.UpdateUser(user1);
         }
