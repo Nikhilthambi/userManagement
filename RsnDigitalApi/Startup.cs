@@ -60,7 +60,8 @@ namespace RsnDigitalApi
             services.AddScoped<IUserService, UserService>();
             services.AddDbContext<DatabaseContext>(options =>
             {
-             options.UseSqlServer(Configuration["ConnectionStrings:UserDb"]);
+                //options.UseSqlServer(Configuration["ConnectionStrings:UserDb"]);
+                options.UseInMemoryDatabase("UserDb");
             });
             services.AddSwaggerGen(c =>
             {

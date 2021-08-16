@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserDetail } from '../shared/user-detail.model';
 import { UserServiceService } from '../shared/user-service.service';
@@ -10,23 +10,29 @@ import { UserServiceService } from '../shared/user-service.service';
   styleUrls: ['./edituser.component.css']
 })
 export class EdituserComponent implements OnInit {
-
-  constructor(public service:UserServiceService,
+  myGroup: FormGroup
+  constructor(public service: UserServiceService,
     private route: ActivatedRoute,
-    private router: Router) { }
-  startDate : any;
+    private router: Router,
+    private fb: FormBuilder) { }
+  startDate: any;
   userID: any;
   ngOnInit(): void {
+    this.myGroup = this.fb.group({
+      dateFormCtrl: new FormControl(new Date())
+    })
     this.userID = Number(this.route.snapshot.params.userID);
-    // this.startDate=new Date(this.service.formData.dob)
-   if(this.userID>0 || this.userID!=null){
-     this.editRecord();
-   }else{
-    this.service.formData=new UserDetail();
-   }
+    if (this.userID > 0) {
+      this.editRecord();
+    } else {
+      this.myGroup.get('dateFormCtrl')?.setValue(new Date());
+      this.service.formData = new UserDetail();
+    }
   }
 
   onSubmit(form: NgForm) {
+    var date = this.myGroup.get('dateFormCtrl')?.value;
+    this.service.formData.dob = date;
     if (this.service.formData.userID == 0) {
       this.insertRecord(form);
     } else {
@@ -62,11 +68,12 @@ export class EdituserComponent implements OnInit {
     )
   }
 
-  editRecord(){
+  editRecord() {
     this.service.editUsertDetail(this.userID).subscribe(
-      res => {     
+      res => {
         console.log(res);
-        this.service.formData =res as UserDetail;
+        this.service.formData = res as UserDetail;
+        this.myGroup.get('dateFormCtrl')?.setValue(this.service.formData.dob);
         //this.service.refreshList();
         //this.toaster.success('Submitted Successfully', 'Payment Register');
       },
@@ -79,6 +86,9 @@ export class EdituserComponent implements OnInit {
   resetForm(form: NgForm) {
     form.form.reset();
     this.service.formData = new UserDetail();
+  }
+  backtoForm(){
+    this.router.navigate(['/user/list/']);
   }
 
 }

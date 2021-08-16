@@ -1,10 +1,14 @@
-<button mat-raised-button color="primary" (click)="createForm()">Create</button>
+
+
 <mat-card class="example-card">
     <mat-card-header>
        
         <mat-card-title>Users</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+        <div style="text-align: end;  padding-bottom: 5px;">
+            <button mat-raised-button  color="primary" (click)="createForm()">Create</button>
+        </div>
         <table class="table">
             <thead class="thead-light">
                 <tr>
@@ -20,7 +24,7 @@
                 <td>{{pd.lastName}}</td>
                 <td> {{ pd.dob | date:'shortDate' }} </td>
                 <td>
-                    <i class="far fa-trash-alt fa-lg text-danger" (click)="populateForm(pd.userID)"></i>
+                    <i class="fas fa-edit fa-lg text-primary" (click)="populateForm(pd.userID)"></i>
                 </td>
                 <td>
                     <i class="far fa-trash-alt fa-lg text-danger" (click)="onDelete(pd.userID)"></i>

@@ -33,6 +33,7 @@ export class UserlistComponent implements OnInit {
   }
 
   createForm(){
+    
     this.router.navigate(['/user/edit/',0]);
   }
 }
