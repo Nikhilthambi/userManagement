@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Moq;
+using RsnDigitalApi.Entity;
+using RsnDigitalApi.Repository;
+using RsnDigitalApi.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,10 +33,10 @@ namespace UserDetectionTest.ServiceTest
                 DOB = DateTime.Parse("Jan 1, 2009")
             });
 
-            _mock.Setup(p => p.users()).ReturnsAsync(users);
+            _mock.Setup(p => p.GetUsers()).ReturnsAsync(users);
 
             //Act
-            var result = await userService.Users();
+            var result = await userService.GetUsers();
 
             //Assert
             Assert.NotNull(result);
@@ -44,7 +48,7 @@ namespace UserDetectionTest.ServiceTest
         {
             //Arrange      
 
-            UserModel userModel = new UserModel
+            RsnDigitalApi.Models.User userModel = new RsnDigitalApi.Models.User
             {
                 FirstName = "Windows",
                 LastName = "Chrome",
@@ -54,7 +58,7 @@ namespace UserDetectionTest.ServiceTest
             _mock.Setup(p => p.UpdateUser(It.IsAny<User>())).ReturnsAsync(true);
 
             //Act
-            var result = await userService.UpdateUser(Usermodel);
+            var result = await userService.UpdateUser(userModel);
 
             //Assert
             Assert.True(result);
@@ -66,25 +70,10 @@ namespace UserDetectionTest.ServiceTest
             //Arrange      
             int id = 1;
 
-            _mock.Setup(p => p.DeleteUser(id).ReturnsAsync(true);
+            _mock.Setup(p => p.DeleteUser(It.IsAny<int>())).ReturnsAsync(true);
 
             //Act
-            var result = await userService.DeleteUser(Usermodel);
-
-            //Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public async Task ValidateUserData_ShouldValidateData_Service_Test()
-        {
-            //Arrange      
-            int id = 1;
-
-            _mock.Setup(p => p.ValidateUser(id).ReturnsAsync(true);
-
-            //Act
-            var result = await userService.ValidateUser(Usermodel);
+            var result = await userService.DeleteUser(id);
 
             //Assert
             Assert.True(result);

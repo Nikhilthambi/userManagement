@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using RsnDigitalApi.Helper;
 using RsnDigitalApi.Models;
 using RsnDigitalApi.Services;
 using System;
@@ -26,11 +28,11 @@ namespace RsnDigitalApi.Controllers
         private const string UserName = "Nikhil@gmail.com";
         private const string Password = "Nikhil123";
         private const int UserId = 100;
-        private readonly IConfiguration _configuration;
-        public UserController(IUserService _userService, IConfiguration configuration)
+        private readonly AppSettings appSettings;
+        public UserController(IUserService _userService, IOptions<AppSettings> options)
         {
+            appSettings = options.Value;
             userService = _userService;
-            _configuration = configuration;
         }
         // GET: api/<UserController>
         [HttpGet]
@@ -59,7 +61,6 @@ namespace RsnDigitalApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] User value)
         {
-            //User user = new User { UserID = 0, DOB = DateTime.Parse(value.DOB), FirstName = value.FirstName, LastName = value.LastName };
             var data = await userService.UpdateUser(value);
             return Ok(data);
         }
@@ -86,7 +87,7 @@ namespace RsnDigitalApi.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 //add private key 
-                string secretKey = _configuration["JwtConfig:Secret"];
+                string secretKey = appSettings.Secret; //_configuration["JwtConfig:Secret"];
                 var key = Encoding.ASCII.GetBytes(secretKey);
 
                 //add tokenDescriptor for secure toke
