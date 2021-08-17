@@ -1,23 +1,21 @@
-
-<div  *ngIf="!IsLoggined">
-
-  <mat-toolbar  class="app-header">
+<div *ngIf="!IsLoggined">
+  <mat-toolbar class="app-header">
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
       <mat-button-toggle value="Log in" routerLink="user/login">Log in</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-toolbar>
-  
-  </div>
-  
-  <div *ngIf="IsLoggined" >
-  <mat-toolbar class="app-header">
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="Logout" (click)="logout()">Logout</mat-button-toggle>
-    </mat-button-toggle-group>
-  </mat-toolbar>
-  </div>
+</div>
 
-  <div class="container">
-    <router-outlet></router-outlet>
+<div *ngIf="IsLoggined">
+  <div mat-dialog-actions style="text-align: end;">
+    <mat-toolbar class="app-header">
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle value="Logout" (click)="logout()">Logout</mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-toolbar>
   </div>
-  
+</div>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

@@ -17,7 +17,9 @@ export class EdituserComponent implements OnInit {
     private fb: FormBuilder) { }
   startDate: any;
   userID: any;
+  maxDate:any;
   ngOnInit(): void {
+    this.maxDate=new Date();
     this.myGroup = this.fb.group({
       dateFormCtrl: new FormControl(new Date())
     })
